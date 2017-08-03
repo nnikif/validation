@@ -85,14 +85,17 @@ function makeAjaxCall() {
   $.post( my_action,
     MyForm.getData())
     .done(function( data ) {
-      $("#resultContainer").addClass(data.status)
+      $("#resultContainer").addClass(data.status);
       switch (data.status){
         case "success":
-          $("#resultContainer").html("Success")
+          $("#resultContainer").html("Success");
+          break;
         case "error":
-          $("#resultContainer").html(data.reason)
+          $("#resultContainer").html(data.reason);
+          break;
         case "progress":
           setTimeout(makeAjaxCall(),data.timeout)
+          break;
 
       }
 
