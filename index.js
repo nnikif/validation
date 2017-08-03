@@ -84,20 +84,20 @@ function makeAjaxCall() {
 
   var my_action = $("#myForm").attr('action');
   $.post( my_action,
-    MyForm.getData())
-    .done(function( data ) {
-      data1=JSON.parse(data);
-      $("#resultContainer").addClass(data1.status)
-      switch (data1.status){
+    MyForm.getData(), function( data ) {
+      if (typeof(data)===typeof("string")) data=JSON.parse(data);
+
+      $("#resultContainer").addClass(data.status)
+
+      switch (data.status){
         case "success":
-          console.log("HI")
           $("#resultContainer").html("Success");
           break;
         case "error":
-          $("#resultContainer").html(data1.reason);
+          $("#resultContainer").html(data.reason);
           break;
         case "progress":
-          setTimeout(makeAjaxCall(),data1.timeout)
+          setTimeout(makeAjaxCall(),data.timeout)
           break;
 
       }
