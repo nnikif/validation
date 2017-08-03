@@ -88,7 +88,6 @@ function makeAjaxCall() {
     .done(function( data ) {
       data1=JSON.parse(data);
       $("#resultContainer").addClass(data1.status)
-      console.log(status)
       switch (data1.status){
         case "success":
           console.log("HI")
