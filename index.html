@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="index.css">
+    <script type="text/javascript" src="./node_modules/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="index.js"></script>
+
+</head>
+<body>
+<form id="myForm" action="success.json">
+    <label>ФИО</label>
+    <input type="text" name="fio"><br>
+    <label>Email</label>
+    <input type="email" name="email"><br>
+    <label>Телефон</label>
+    <input type="text" name="phone"><br>
+    <button id="submitButton" onclick="MyForm.submit();return false ">Отправить форму</button>
+</form>
+
+<div id="resultContainer"></div>
+</body>
+</html>
