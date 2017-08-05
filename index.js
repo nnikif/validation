@@ -9,10 +9,8 @@ var MyForm = {
     var errorFields=[];
     var data=this.getData();
 
-
     $.each(this.validators, function (field,validator) {
       if (!validator(data[field])) errorFields.push(field);
-      
     });
 
     var isValid=(errorFields.length===0);
@@ -23,8 +21,6 @@ var MyForm = {
 
     var returned={};
     $.each(this.validators, function(field) { returned[field] = $("#myForm input[name=" + field + "]").val() });
-
-
     return returned;
 
   },
