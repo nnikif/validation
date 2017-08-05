@@ -1,35 +1,42 @@
+var node;
+var output_node;
+
+$(document).ready(function() {
+  node=$("#myForm");
+  output_node=$("#resultContainer");
+});
+
+validators= {"fio": validateFIO,
+  "email":validateEmail,
+  "phone":validatePhone};
+
 var MyForm = {
 
-  validators: {"fio": validateFIO,
-    "email":validateEmail,
-    "phone":validatePhone},
 
   validate: function () {
 
     var errorFields=[];
     var data=this.getData();
 
-    $.each(this.validators, function (field,validator) {
-      if (!validator(data[field])) errorFields.push(field);
+    $.each(validators, function (field,validator) {
+      if (!validator(data[field])) {errorFields.push(field);}
     });
-
-    var isValid=(errorFields.length===0);
-    return {isValid:isValid,errorFields:errorFields};
+    return {isValid:errorFields.length===0,errorFields:errorFields};
 
   },
   getData: function () {
 
     var returned={};
-    $.each(this.validators, function(field) { returned[field] = $("#myForm input[name=" + field + "]").val() });
+    $.each(validators, function(field) { returned[field] = node.find("input[name=" + field + "]").val();});
     return returned;
 
   },
   setData: function(form_values){
 
-    $.each(this.validators, function (field) {
-      if (form_values[field]) $("#myForm input[name=" + field + "]").val(form_values[field]);
+    $.each(validators, function (field) {
+      if (form_values[field]) {node.find("input[name=" + field + "]").val(form_values[field]);}
 
-    })
+    });
 
 
   },
@@ -47,7 +54,7 @@ var MyForm = {
   }
 
 
-}
+};
 
 function validatePhone(number) {
   var  phoneRe=/\+7\(\d{3}\)\d{3}-\d{2}-\d{2}$/;
@@ -60,12 +67,12 @@ function validatePhone(number) {
 
 }
 function validateFIO(fio) {
-  return fio.split(' ').length===3;
+  return fio.split(" ").length===3;
 
 }
 
 function validateEmail(email) {
-  var emailRe = /^\w+([\.-]?\w+)*@(ya.ru|yandex.ru|yandex.ua|yandex.by|yandex.kz|yandex.com)$/
+  var emailRe = /^\w+([\.\-]?\w+)*@(ya.ru|yandex.ru|yandex.ua|yandex.by|yandex.kz|yandex.com)$/;
   return emailRe.test(email);
 }
 
@@ -87,19 +94,19 @@ function disableSubmit() {
 
 function makeAjaxCall() {
 
-  var my_action = $("#myForm").attr('action');
+  var my_action = node.attr("action");
   $.post( my_action,
     MyForm.getData(), function( data ) {
 
-      $("#resultContainer").addClass(data.status)
+      output_node.addClass(data.status)
 
       switch (data.status){
         case "success":
-          $("#resultContainer").html("Success");
+          output_node.html("Success");
           break;
 
         case "error":
-          $("#resultContainer").html(data.reason);
+          output_node.html(data.reason);
           break;
 
         case "progress":
