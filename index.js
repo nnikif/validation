@@ -11,7 +11,7 @@ var MyForm = {
 
 
     $.each(this.validators, function (field,validator) {
-      if (!validator(data[field])) errorFields.push(field)
+      if (!validator(data[field])) errorFields.push(field);
       
     });
 
@@ -55,7 +55,7 @@ var MyForm = {
 
 function validatePhone(number) {
   var  phoneRe=/\+7\(\d{3}\)\d{3}-\d{2}-\d{2}$/;
-  if (!phoneRe.test(number)) return false
+  if (!phoneRe.test(number)) return false;
   var only_digits=number.match(/\d/g);
   var sum=only_digits.reduce(function(a,b){
     return a+parseInt(b);
@@ -75,18 +75,18 @@ function validateEmail(email) {
 
 function setErrorClasses(error_fields) {
   error_fields.forEach(function(error_item){
-    $("#myForm input[name="+error_item+"]").addClass("error")
+    $("#myForm input[name="+error_item+"]").addClass("error");
   })
 
 }
 function removeErrorClasses() {
   $("#myForm input").each(function () {
-    $( this ).removeClass("error")
+    $( this ).removeClass("error");
   })
 
 }
 function disableSubmit() {
-  $("#submitButton").attr("disabled","disabled")
+  $("#submitButton").attr("disabled","disabled");
 }
 
 function makeAjaxCall() {
@@ -107,7 +107,7 @@ function makeAjaxCall() {
           break;
 
         case "progress":
-          setTimeout(makeAjaxCall(),data.timeout)
+          setTimeout(makeAjaxCall(),data.timeout);
           break;
 
       }
