@@ -6,13 +6,11 @@ $(document).ready(function() {
   output_node=$("#resultContainer");
 });
 
-validators= {"fio": validateFIO,
+var validators= {"fio": validateFIO,
   "email":validateEmail,
   "phone":validatePhone};
 
 var MyForm = {
-
-
   validate: function () {
 
     var errorFields=[];
@@ -37,10 +35,7 @@ var MyForm = {
       if (form_values[field]) {node.find("input[name=" + field + "]").val(form_values[field]);}
 
     });
-
-
   },
-
   submit: function () {
     removeErrorClasses();
     var validation_result=this.validate();
@@ -52,7 +47,6 @@ var MyForm = {
 
 
   }
-
 
 };
 
@@ -78,12 +72,12 @@ function validateEmail(email) {
 
 function setErrorClasses(error_fields) {
   error_fields.forEach(function(error_item){
-    $("#myForm input[name="+error_item+"]").addClass("error");
+    node.find("input[name=" + error_item + "]").addClass("error")
   })
 
 }
 function removeErrorClasses() {
-  $("#myForm input").each(function () {
+  node.find("input").each(function () {
     $( this ).removeClass("error");
   })
 
