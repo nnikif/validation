@@ -105,9 +105,7 @@ function makeAjaxCall() {
         case "progress":
           setTimeout(makeAjaxCall(),data.timeout);
           break;
-
       }
-
     },"json");
 
 
