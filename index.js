@@ -1,36 +1,47 @@
 var MyForm = {
 
+  validators: {"fio": validateFIO,
+    "email":validateEmail,
+    "phone":validatePhone},
+
   validate: function () {
 
     var errorFields=[];
-    if (!validateFIO(this.getData().fio)) errorFields.push("fio")
-    if (!validateEmail(this.getData().email)) errorFields.push("email")
-    if (!validatePhone(this.getData().phone)) errorFields.push("phone")
-    var isValid=(errorFields.length===0)
-    return {isValid:isValid,errorFields:errorFields}
+    var data=this.getData();
+
+
+    $.each(this.validators, function (field,validator) {
+      if (!validator(data[field])) errorFields.push(field)
+      
+    });
+
+    var isValid=(errorFields.length===0);
+    return {isValid:isValid,errorFields:errorFields};
 
   },
   getData: function () {
-    var returned={};
 
-    returned.fio=$("#myForm input[name=fio]").val();
-    returned.email=$("#myForm input[name=email]").val();
-    returned.phone=$("#myForm input[name=phone]").val()
+    var returned={};
+    $.each(this.validators, function(field) { returned[field] = $("#myForm input[name=" + field + "]").val() });
+
 
     return returned;
 
   },
   setData: function(form_values){
-    if (form_values.fio) $("#myForm input[name=fio]").val(form_values.fio);
-    if (form_values.email) $("#myForm input[name=email]").val(form_values.email);
-    if (form_values.phone) $("#myForm input[name=phone]").val(form_values.phone);
+
+    $.each(this.validators, function (field) {
+      if (form_values[field]) $("#myForm input[name=" + field + "]").val(form_values[field]);
+
+    })
+
 
   },
 
   submit: function () {
     removeErrorClasses();
     var validation_result=this.validate();
-    setErrorClasses(validation_result.errorFields)
+    setErrorClasses(validation_result.errorFields);
     if (validation_result.isValid) {
       disableSubmit();
       makeAjaxCall();
@@ -49,19 +60,17 @@ function validatePhone(number) {
   var sum=only_digits.reduce(function(a,b){
     return a+parseInt(b);
   },0)
-  if (sum>30) return false
-  else return true
+  return sum<=30;
 
 }
 function validateFIO(fio) {
-  if (fio.split(' ').length===3) return true;
-  return false;
+  return fio.split(' ').length===3;
 
 }
 
 function validateEmail(email) {
   var emailRe = /^\w+([\.-]?\w+)*@(ya.ru|yandex.ru|yandex.ua|yandex.by|yandex.kz|yandex.com)$/
-  return emailRe.test(email)
+  return emailRe.test(email);
 }
 
 function setErrorClasses(error_fields) {
@@ -85,7 +94,6 @@ function makeAjaxCall() {
   var my_action = $("#myForm").attr('action');
   $.post( my_action,
     MyForm.getData(), function( data ) {
-      if (typeof(data)===typeof("string")) data=JSON.parse(data);
 
       $("#resultContainer").addClass(data.status)
 
@@ -93,16 +101,18 @@ function makeAjaxCall() {
         case "success":
           $("#resultContainer").html("Success");
           break;
+
         case "error":
           $("#resultContainer").html(data.reason);
           break;
+
         case "progress":
           setTimeout(makeAjaxCall(),data.timeout)
           break;
 
       }
 
-    });
+    },"json");
 
 
 
