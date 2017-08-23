@@ -37,20 +37,17 @@ var MyForm = {
       return;
     }
     this.setErrorClasses(validation_result.errorFields);
-
   },
   setErrorClasses: function(error_fields) {
     var self = this;
     error_fields.forEach(function(error_item){
       self.node.find("input[name=" + error_item + "]").addClass("error");
     });
-
   },
   removeErrorClasses: function() {
     this.node.find("input").each(function () {
       $(this).removeClass("error");
     });
-
   },
   makeAjaxCall: function () {
     var self = this;
