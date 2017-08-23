@@ -18,7 +18,6 @@ var MyForm = {
     var returned = {};
     this.node.find("input").each(function(){returned[$(this)[0].name] = $(this)[0].value;});
     return returned;
-
   },
   setData: function(form_values){
     this.node.find("input").each(function () {
